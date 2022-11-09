@@ -6,6 +6,15 @@ from rest_framework.response import Response
 from rest_framework import status
 
 # Create your views here.
+class FlightCreateView(APIView):
+    def post(self, request):
+        serializer = FlightSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({ 'data': serializer.data }, status=status.HTTP_201_CREATED)
+        else:
+            return Response({ 'data': serializer.errors }, status=status.HTTP_400_BAD_REQUEST)
+
 class FlightView(APIView):
     def get(self, request):
         flights = Flight.objects.all()
