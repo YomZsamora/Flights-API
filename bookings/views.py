@@ -29,13 +29,21 @@ class PassengerCreateView(APIView):
             return Response({ 'data': serializer.data }, status=status.HTTP_201_CREATED)
         else:
             return Response({ 'data': serializer.errors }, status=status.HTTP_400_BAD_REQUEST)
-            
 
 class PassengerView(APIView):
     def get(self, request):
         passengers = Passenger.objects.all()
         serializer = PassengerSerializer(passengers, many=True)
         return Response({ 'Passengers': serializer.data }, status=status.HTTP_200_OK)
+
+class BookingCreateView(APIView):
+    def post(self, request):
+        serializer = BookingSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({ 'data': serializer.data }, status=status.HTTP_201_CREATED)
+        else:
+            return Response({ 'data': serializer.errors }, status=status.HTTP_400_BAD_REQUEST)
     
 class BookingView(APIView):
     def get(self, request):

@@ -13,6 +13,8 @@ urlpatterns = [
     path('passenger/add/', views.PassengerCreateView.as_view(), name='create-passenger'),
     # GET: Fetch All Passengers
     path('passengers/', views.PassengerView.as_view(), name='passenger-list'),
+    # POST: Create New Booking
+    path('booking/add/', views.BookingCreateView.as_view(), name='create-booking'),
     # GET: Fetch All Bookings
     path('bookings/', views.BookingView.as_view(), name='booking-list'),
     
