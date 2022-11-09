@@ -13,7 +13,7 @@ class Flight(models.Model):
 class Passenger(models.Model):
     last_name = models.CharField(max_length=70, null=False)
     first_name = models.CharField(max_length=70, null=False)
-    email_address = models.CharField(max_length=70, null=False, unique=True)
+    email_address = models.CharField(max_length=70, null=True, unique=True, blank=False)
     phone_no = models.CharField(max_length=50)
     
     def __str__(self):
