@@ -9,6 +9,8 @@ urlpatterns = [
     path('flight/add/', views.FlightCreateView.as_view(), name='create-flight'),
     # GET: Fetch All Flights
     path('flights/', views.FlightView.as_view(), name='flight-list'),
+    # POST: Create New Passenger
+    path('passenger/add/', views.PassengerCreateView.as_view(), name='create-passenger'),
     # GET: Fetch All Passengers
     path('passengers/', views.PassengerView.as_view(), name='passenger-list'),
     # GET: Fetch All Bookings

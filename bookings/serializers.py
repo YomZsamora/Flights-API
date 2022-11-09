@@ -14,6 +14,9 @@ class PassengerSerializer(serializers.ModelSerializer):
         model = Passenger
         fields = '__all__'
         
+    def create(self, validated_data):
+        return Passenger.objects.create(**validated_data)
+        
 class BookingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Booking
