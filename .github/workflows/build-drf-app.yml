@@ -10,6 +10,17 @@ jobs:
 
     runs-on: ubuntu-latest
     environment: DevEnvironment
+
+    services:
+      mysql:
+        image: mysql:8
+        env:
+            MYSQL_ALLOW_EMPTY_PASSWORD: yes
+            MYSQL_DATABASE: flights_db
+        ports:
+            - 3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     strategy:
       fail-fast: false
       matrix:
@@ -41,5 +52,5 @@ jobs:
     - name: Test with Coverage
       run: |
         sudo systemctl start mysql 
-        mysql -uroot < flights_db_backup.sql
+        mysql -uroot flights_db < flights_db_backup.sql
         coverage run --source='.' manage.py test bookings
