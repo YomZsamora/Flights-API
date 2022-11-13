@@ -1,4 +1,4 @@
-from django.test import TestCase
+
 from rest_framework.test import APITestCase
 from bookings.models import Flight, Passenger
 
