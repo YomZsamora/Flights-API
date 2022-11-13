@@ -1,2 +1,4 @@
 venv/
 /flights/.env
+flights_db_backup.sql
+docker-compose.yml
