@@ -52,5 +52,4 @@ jobs:
     - name: Test with Coverage
       run: |
         sudo systemctl start mysql 
-        mysql -uyomz -p@dZumi0991 flights_db < flights_db_backup.sql
         coverage run --source='.' manage.py test bookings
