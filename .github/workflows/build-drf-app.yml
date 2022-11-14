@@ -43,3 +43,4 @@ jobs:
     - name: Test with Coverage
       run: |
         coverage run --source='.' manage.py test bookings
+        coverage report
