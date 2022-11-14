@@ -33,7 +33,7 @@ class FlightDetailView(APIView):
     def get(self, request, pk):
         flight = self.get_flight_by_pk(pk)
         serializer = FlightSerializer(flight)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
     def put(self, request, pk):
         flight = self.get_flight_by_pk(pk)
@@ -77,7 +77,7 @@ class PassengerDetailView(APIView):
     def get(self, request, pk):
         passenger = self.get_passenger_by_pk(pk)
         serializer = PassengerSerializer(passenger)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
     def put(self, request, pk):
         passenger = self.get_passenger_by_pk(pk)
@@ -121,7 +121,7 @@ class BookingDetailView(APIView):
     def get(self, request, pk):
         booking = self.get_booking_by_pk(pk)
         serializer = BookingSerializer(booking)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
     
     def put(self, request, pk):
         booking = self.get_booking_by_pk(pk)

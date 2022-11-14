@@ -2,10 +2,14 @@ from rest_framework.test import APITestCase
 from bookings.models import Flight, Passenger, Booking
 from django.urls import reverse
 from rest_framework import status
+import json
 
 class TestViews(APITestCase):
     
-    def test_create_flight_post(self):
+    # -----------------------------------------------------------
+    # FLIGHT TESTS HERE
+    # -----------------------------------------------------------
+    def test_create_flight_POST(self):
         flight = {
             "from_location": "Malindi",
             "to_location": "Nairobi",
@@ -21,11 +25,24 @@ class TestViews(APITestCase):
         response = self.client.post(reverse('bookings:create-flight'), flight)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
     
-    def test_flight_list_get(self):
+    def test_flight_list_GET(self):
         response = self.client.get(reverse('bookings:flight-list'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         
-    def test_create_passenger_post(self):
+    def test_flight_details_GET(self):
+        Flight.objects.bulk_create([
+            Flight(from_location = "Malindi", to_location = "Nairobi", departure_time = "2022-11-10T18:00:00+03:00", arrival_time = "2022-11-10T18:45:00+03:00", available_seats = 18),
+            Flight(from_location = "Eldoret", to_location = "Kisumu", departure_time = "2022-12-04T18:00:00+03:00", arrival_time = "2023-01-08T11:45:00+03:00", available_seats = 22),
+        ])
+        response = self.client.get(reverse('bookings:flight-details', kwargs={"pk": 2}))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['available_seats'], 22)
+        
+    
+    # -----------------------------------------------------------
+    # PASSENGER TESTS HERE
+    # -----------------------------------------------------------    
+    def test_create_passenger_POST(self):
         passenger = {
             "last_name": "Mukhanga",
             "first_name": "Bridgit",
@@ -40,11 +57,14 @@ class TestViews(APITestCase):
         response = self.client.post(reverse('bookings:create-passenger'), passenger)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         
-    def test_passenger_list_get(self):
+    def test_passenger_list_GET(self):
         response = self.client.get(reverse('bookings:passenger-list'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
     
-    def test_create_booking_post(self):
+    # -----------------------------------------------------------
+    # BOOKING TESTS HERE
+    # -----------------------------------------------------------
+    def test_create_booking_POST(self):
         test_flight = Flight.objects.create(
             from_location = "Malindi",
             to_location = "Nairobi",
@@ -71,7 +91,7 @@ class TestViews(APITestCase):
         response = self.client.post(reverse('bookings:create-booking'), booking)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         
-    def test_booking_list_get(self):
+    def test_booking_list_GET(self):
         response = self.client.get(reverse('bookings:booking-list'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         
