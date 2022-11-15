@@ -61,6 +61,14 @@ class TestViews(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['flight']['available_seats'], 6)
         
+    def test_flight_details_update_error(self):
+        invalid_post = {
+            "available_seats": "12", # Should be Number of IntegerField
+            "departure_time": "11/02/2022" # Invalid DateTimeField Format
+        }
+        response = self.client.put(reverse('bookings:flight-details', kwargs={"pk": 1}), invalid_post) 
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        
     def test_flight_details_DELETE(self):
         response = self.client.delete(reverse('bookings:flight-details', kwargs={"pk": 2}))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
@@ -107,6 +115,13 @@ class TestViews(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['passenger']['email_address'], "w.bus@adzumi.co.ke")
         
+    def test_passenger_details_update_error(self):
+        invalid_post = {
+            "last_name": "Muthomi9", # Name Should Not Contain a Number
+        }
+        response = self.client.put(reverse('bookings:passenger-details', kwargs={"pk": 1}), invalid_post) 
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        
     def test_passenger_details_DELETE(self):
         response = self.client.delete(reverse('bookings:passenger-details', kwargs={'pk': 3}))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
@@ -146,6 +161,18 @@ class TestViews(APITestCase):
     def test_booking_does_not_exist_GET(self):
         response = self.client.get(reverse('bookings:booking-details', kwargs={'pk': 3}))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        
+    def test_booking_details_update_PUT(self):
+        response = self.client.put(reverse('bookings:booking-details', kwargs={"pk": 1}), {'booked_seat': "19A"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['booking']['booked_seat'], "19A")
+        
+    def test_booking_details_update_error(self):
+        invalid_post = {
+            "passenger_id": 7, # Passenger With ID 7 Doesn't Exist
+        }
+        response = self.client.put(reverse('bookings:booking-details', kwargs={"pk": 1}), invalid_post) 
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         
     def test_booking_details_DELETE(self):
         response = self.client.delete(reverse('bookings:booking-details', kwargs={'pk': 1}))
