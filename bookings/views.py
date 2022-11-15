@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.http import Http404
 from .models import Flight, Passenger, Booking
 from .serializers import FlightSerializer, PassengerSerializer, BookingSerializer
 from rest_framework.views import APIView
@@ -28,7 +28,7 @@ class FlightDetailView(APIView):
         try:
             return Flight.objects.get(pk=pk)
         except:
-            return Response({"error": "Flight Does Not Exist!"}, status=status.HTTP_404_NOT_FOUND)
+            raise Http404
         
     def get(self, request, pk):
         flight = self.get_flight_by_pk(pk)
@@ -37,10 +37,10 @@ class FlightDetailView(APIView):
     
     def put(self, request, pk):
         flight = self.get_flight_by_pk(pk)
-        serializer = FlightSerializer(flight, data=request.data)
+        serializer = FlightSerializer(flight, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response({"data": serializer.data, "message": "Flight Updated Successfully!"}, status=status.HTTP_200_OK)
+            return Response({"flight": serializer.data, "message": "Flight Updated Successfully!"}, status=status.HTTP_200_OK)
         return Response({"data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
     
     def delete(self, request, pk):
@@ -72,7 +72,7 @@ class PassengerDetailView(APIView):
         try:
             return Passenger.objects.get(pk=pk)
         except:
-            return Response({"error": "Passenger Does Not Exist!"}, status=status.HTTP_404_NOT_FOUND)
+            raise Http404
         
     def get(self, request, pk):
         passenger = self.get_passenger_by_pk(pk)
@@ -81,10 +81,10 @@ class PassengerDetailView(APIView):
     
     def put(self, request, pk):
         passenger = self.get_passenger_by_pk(pk)
-        serializer = PassengerSerializer(passenger, data=request.data)
+        serializer = PassengerSerializer(passenger, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response({"data": serializer.data, "message": "Passenger Updated Successfully!"}, status=status.HTTP_200_OK)
+            return Response({"passenger": serializer.data, "message": "Passenger Updated Successfully!"}, status=status.HTTP_200_OK)
         return Response({"data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
     
     def delete(self, request, pk):
@@ -116,7 +116,7 @@ class BookingDetailView(APIView):
         try:
             return Booking.objects.get(pk=pk)
         except:
-            return Response({"error": "Booking Does Not Exist!"}, status=status.HTTP_404_NOT_FOUND)
+            raise Http404
         
     def get(self, request, pk):
         booking = self.get_booking_by_pk(pk)
@@ -125,10 +125,10 @@ class BookingDetailView(APIView):
     
     def put(self, request, pk):
         booking = self.get_booking_by_pk(pk)
-        serializer = BookingSerializer(booking, data=request.data)
+        serializer = BookingSerializer(booking, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response({"data": serializer.data, "message": "Booking Updated Successfully!"}, status=status.HTTP_200_OK)
+            return Response({"booking": serializer.data, "message": "Booking Updated Successfully!"}, status=status.HTTP_200_OK)
         return Response({"data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
     
     def delete(self, request, pk):
