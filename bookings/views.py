@@ -96,6 +96,7 @@ class PassengerDetailView(APIView):
 # -----------------------------------------------------------
 # BOOKING VIEWS HERE
 # -----------------------------------------------------------
+class BookingCreateView(APIView):
     def post(self, request):
         serializer = BookingSerializer(data=request.data)
         if serializer.is_valid():
