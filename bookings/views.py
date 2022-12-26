@@ -2,26 +2,16 @@ from django.http import Http404
 from .models import Flight, Passenger, Booking
 from .serializers import FlightSerializer, PassengerSerializer, BookingSerializer
 from rest_framework.views import APIView
+from rest_framework.generics import ListCreateAPIView
 from rest_framework.response import Response
 from rest_framework import status
 
 # -----------------------------------------------------------
 # FLIGHT VIEWS HERE
 # -----------------------------------------------------------
-class FlightCreateView(APIView):
-    def post(self, request):
-        serializer = FlightSerializer(data = request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({ 'data': serializer.data }, status=status.HTTP_201_CREATED)
-        else:
-            return Response({ 'data': serializer.errors }, status=status.HTTP_400_BAD_REQUEST)
-
-class FlightListView(APIView):
-    def get(self, request):
-        flights = Flight.objects.all()
-        serializer = FlightSerializer(flights, many=True)
-        return Response({ 'Flights': serializer.data }, status=status.HTTP_200_OK)
+class FlightListAPIView(ListCreateAPIView):
+    queryset = Flight.objects.all()
+    serializer_class = FlightSerializer
     
 class FlightDetailView(APIView):
     def get_flight_by_pk(self, pk):

@@ -5,10 +5,8 @@ from . import views
 app_name = 'bookings'
 
 urlpatterns = [
-    # POST: Create New Flight
-    path('flight/add/', views.FlightCreateView.as_view(), name='create-flight'),
-    # GET: Fetch All Flights
-    path('flights/', views.FlightListView.as_view(), name='flight-list'),
+    # GET & POST: Create New Flight & Fetch All Flights
+    path('flights/', views.FlightListAPIView.as_view(), name='flight-list'),
     # GET: /Fetched a Specific Flight Given the ID
     path('flight/<int:pk>/', views.FlightDetailView.as_view(), name='flight-details'),
     # POST: Create New Passenger

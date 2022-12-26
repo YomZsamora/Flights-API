@@ -34,12 +34,12 @@ class TestViews(APITestCase):
     def test_create_flight_POST(self):
         flight = Flight.objects.get(pk=1)
         serializer = FlightSerializer(flight)
-        response = self.client.post(reverse('bookings:create-flight'), serializer.data)
+        response = self.client.post(reverse('bookings:flight-list'), serializer.data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         
     def test_create_flight_error(self):
         flight = {}
-        response = self.client.post(reverse('bookings:create-flight'), flight)
+        response = self.client.post(reverse('bookings:flight-list'), flight)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
     
     def test_flight_list_GET(self):
