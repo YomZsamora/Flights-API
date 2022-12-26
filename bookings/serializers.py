@@ -43,8 +43,8 @@ class BookingSerializer(serializers.ModelSerializer):
         return Booking.objects.create(**validated_data)
     
     def update(self, instance, validated_data):
-        instance.flight_id = validated_data.get('flight_id', instance.flight_id)
-        instance.passenger_id = validated_data.get('passenger_id', instance.passenger_id)
+        instance.flight = validated_data.get('flight_id', instance.flight)
+        instance.passenger = validated_data.get('passenger_id', instance.passenger)
         instance.booked_seat = validated_data.get('booked_seat', instance.booked_seat)
         instance.save()
         return instance
