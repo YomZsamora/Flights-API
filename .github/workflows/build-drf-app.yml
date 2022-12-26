@@ -12,9 +12,6 @@ jobs:
     runs-on: ubuntu-latest
     environment: DevEnvironment
 
-    strategy:
-      fail-fast: false
-
     env:
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
       DEBUG: ${{ secrets.DEBUG }}
