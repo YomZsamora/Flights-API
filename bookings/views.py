@@ -2,7 +2,7 @@ from django.http import Http404
 from .models import Flight, Passenger, Booking
 from .serializers import FlightSerializer, PassengerSerializer, BookingSerializer
 from rest_framework.views import APIView
-from rest_framework.generics import ListCreateAPIView
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.response import Response
 from rest_framework import status
 
@@ -13,30 +13,10 @@ class FlightListAPIView(ListCreateAPIView):
     queryset = Flight.objects.all()
     serializer_class = FlightSerializer
     
-class FlightDetailView(APIView):
-    def get_flight_by_pk(self, pk):
-        try:
-            return Flight.objects.get(pk=pk)
-        except:
-            raise Http404
-        
-    def get(self, request, pk):
-        flight = self.get_flight_by_pk(pk)
-        serializer = FlightSerializer(flight)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    
-    def put(self, request, pk):
-        flight = self.get_flight_by_pk(pk)
-        serializer = FlightSerializer(flight, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"flight": serializer.data, "message": "Flight Updated Successfully!"}, status=status.HTTP_200_OK)
-        return Response({"data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-    
-    def delete(self, request, pk):
-        flight = self.get_flight_by_pk(pk)
-        flight.delete()
-        return Response({"messages": "Selected Flight Has Beed Deleted!"}, status=status.HTTP_204_NO_CONTENT)
+class FlightDetailAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Flight.objects.all()
+    serializer_class = FlightSerializer
+
 
 
 # -----------------------------------------------------------
