@@ -7,7 +7,7 @@ app_name = 'bookings'
 urlpatterns = [
     # GET & POST: Create New Flight & Fetch All Flights
     path('flights/', views.FlightListAPIView.as_view(), name='flight-list'),
-    # GET: /Fetched a Specific Flight Given the ID
+    # GET, PUT & DELETE: /Fetched a Specific Flight Given the ID
     path('flight/<int:pk>/', views.FlightDetailAPIView.as_view(), name='flight-details'),
     # POST: Create New Passenger
     path('passenger/add/', views.PassengerCreateView.as_view(), name='create-passenger'),

@@ -16,6 +16,11 @@ class FlightListAPIView(ListCreateAPIView):
 class FlightDetailAPIView(RetrieveUpdateDestroyAPIView):
     queryset = Flight.objects.all()
     serializer_class = FlightSerializer
+    
+    # Implements Partial Update
+    def get_serializer(self, *args, **kwargs):
+        kwargs['partial'] = True
+        return super(FlightDetailAPIView, self).get_serializer(*args, **kwargs)
 
 
 
