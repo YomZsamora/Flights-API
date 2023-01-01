@@ -5,6 +5,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
+from rest_framework.viewsets import ReadOnlyModelViewSet
+from drf_excel.mixins import XLSXFileMixin
+from drf_excel.renderers import XLSXRenderer
+
 # -----------------------------------------------------------
 # FLIGHT VIEWS HERE
 # -----------------------------------------------------------
@@ -47,6 +51,16 @@ class FlightDetailView(APIView):
         flight = self.get_flight_by_pk(pk)
         flight.delete()
         return Response({"messages": "Selected Flight Has Beed Deleted!"}, status=status.HTTP_204_NO_CONTENT)
+    
+class FlightReportView(XLSXFileMixin, ReadOnlyModelViewSet):
+    queryset = Flight.objects.all()
+    serializer_class = FlightSerializer
+    renderer_classes = [XLSXRenderer]
+    filename = 'my_export.xlsx'
+    
+    def list(self, request, *arg, **kwargs):
+            queryset = Flight.objects.all()
+            return Response(data=self.serializer_class(queryset, many=True).data)
 
 
 # -----------------------------------------------------------
@@ -135,3 +149,5 @@ class BookingDetailView(APIView):
         booking = self.get_booking_by_pk(pk)
         booking.delete()
         return Response({"messages": "Selected Booking Has Beed Deleted!"}, status=status.HTTP_204_NO_CONTENT)
+
+

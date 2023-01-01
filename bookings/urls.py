@@ -11,6 +11,8 @@ urlpatterns = [
     path('flights/', views.FlightListView.as_view(), name='flight-list'),
     # GET: /Fetched a Specific Flight Given the ID
     path('flight/<int:pk>/', views.FlightDetailView.as_view(), name='flight-details'),
+    # GET: Get a Report for All Flights
+    path('flights/report/', views.FlightReportView.as_view({'get': 'list'}), name='flight-report'),
     # POST: Create New Passenger
     path('passenger/add/', views.PassengerCreateView.as_view(), name='create-passenger'),
     # GET: Fetch All Passengers
