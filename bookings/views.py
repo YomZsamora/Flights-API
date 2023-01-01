@@ -27,45 +27,19 @@ class FlightDetailAPIView(RetrieveUpdateDestroyAPIView):
 # -----------------------------------------------------------
 # PASSENGER VIEWS HERE
 # -----------------------------------------------------------
-class PassengerCreateView(APIView):
-    def post(self, request):
-        serializer = PassengerSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({ 'data': serializer.data }, status=status.HTTP_201_CREATED)
-        else:
-            return Response({ 'data': serializer.errors }, status=status.HTTP_400_BAD_REQUEST)
+class PassengerListAPIView(ListCreateAPIView):
+    queryset = Passenger.objects.all()
+    serializer_class = PassengerSerializer
+    
+class PassengerDetailAPIView(RetrieveUpdateDestroyAPIView):
+    queryset = Passenger.objects.all()
+    serializer_class = PassengerSerializer
+    
+    #Implement Partial Update
+    def get_serializer(self, *args, **kwargs):
+        kwargs['partial'] = True
+        return super(PassengerDetailAPIView, self).get_serializer(*args, **kwargs)
 
-class PassengerListView(APIView):
-    def get(self, request):
-        passengers = Passenger.objects.all()
-        serializer = PassengerSerializer(passengers, many=True)
-        return Response({ 'Passengers': serializer.data }, status=status.HTTP_200_OK)
-    
-class PassengerDetailView(APIView):
-    def get_passenger_by_pk(self, pk):
-        try:
-            return Passenger.objects.get(pk=pk)
-        except:
-            raise Http404
-        
-    def get(self, request, pk):
-        passenger = self.get_passenger_by_pk(pk)
-        serializer = PassengerSerializer(passenger)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    
-    def put(self, request, pk):
-        passenger = self.get_passenger_by_pk(pk)
-        serializer = PassengerSerializer(passenger, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"passenger": serializer.data, "message": "Passenger Updated Successfully!"}, status=status.HTTP_200_OK)
-        return Response({"data": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
-    
-    def delete(self, request, pk):
-        passenger = self.get_passenger_by_pk(pk)
-        passenger.delete()
-        return Response({"messages": "Selected Passenger Has Beed Deleted!"}, status=status.HTTP_204_NO_CONTENT)
 
 
 # -----------------------------------------------------------

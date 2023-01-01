@@ -9,12 +9,10 @@ urlpatterns = [
     path('flights/', views.FlightListAPIView.as_view(), name='flight-list'),
     # GET, PUT & DELETE: /Fetched a Specific Flight Given the ID
     path('flight/<int:pk>/', views.FlightDetailAPIView.as_view(), name='flight-details'),
-    # POST: Create New Passenger
-    path('passenger/add/', views.PassengerCreateView.as_view(), name='create-passenger'),
-    # GET: Fetch All Passengers
-    path('passengers/', views.PassengerListView.as_view(), name='passenger-list'),
+    # GET & POST: Create New Passenger & Fetch All Passengers
+    path('passengers/', views.PassengerListAPIView.as_view(), name='passenger-list'),
     # GET: /Fetched a Specific Passenger Given the ID
-    path('passenger/<int:pk>/', views.PassengerDetailView.as_view(), name='passenger-details'),
+    path('passenger/<int:pk>/', views.PassengerDetailAPIView.as_view(), name='passenger-details'),
     # POST: Create New Booking
     path('booking/add/', views.BookingCreateView.as_view(), name='create-booking'),
     # GET: Fetch All Bookings
