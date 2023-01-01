@@ -86,14 +86,14 @@ class TestViews(APITestCase):
             "email_address": "bigman.stevo@comrades.com",
             "phone_no": "0112345096"
         }
-        response = self.client.post(reverse('bookings:create-passenger'), passenger)
+        response = self.client.post(reverse('bookings:passenger-list'), passenger)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Passenger.objects.count(), 4)
         self.assertEqual(Passenger.objects.get(pk=4).email_address, "bigman.stevo@comrades.com")
         
     def test_create_passenger_error(self):
         passenger = {}
-        response = self.client.post(reverse('bookings:create-passenger'), passenger)
+        response = self.client.post(reverse('bookings:passenger-list'), passenger)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         
     def test_passenger_list_GET(self):
@@ -113,7 +113,7 @@ class TestViews(APITestCase):
     def test_passenger_details_update_PUT(self):
         response = self.client.put(reverse('bookings:passenger-details', kwargs={"pk": 2}), {'email_address': "w.bus@adzumi.co.ke"})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['passenger']['email_address'], "w.bus@adzumi.co.ke")
+        self.assertEqual(response.data['email_address'], "w.bus@adzumi.co.ke")
         
     def test_passenger_details_update_error(self):
         invalid_post = {
