@@ -1,26 +1,29 @@
 from django.http import Http404
 from .models import Flight, Passenger, Booking
 from .serializers import FlightSerializer, PassengerSerializer, BookingSerializer
-from rest_framework.views import APIView
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
-from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import viewsets
+
 
 # -----------------------------------------------------------
 # FLIGHT VIEWS HERE
 # -----------------------------------------------------------
-class FlightListAPIView(ListCreateAPIView):
+# class FlightListAPIView(ListCreateAPIView):
+#     queryset = Flight.objects.all()
+#     serializer_class = FlightSerializer
+    
+# class FlightDetailAPIView(RetrieveUpdateDestroyAPIView):
+#     queryset = Flight.objects.all()
+#     serializer_class = FlightSerializer
+    
+#     # Implements Partial Update
+#     def get_serializer(self, *args, **kwargs):
+#         kwargs['partial'] = True
+#         return super(FlightDetailAPIView, self).get_serializer(*args, **kwargs)
+
+class FlightViewSet(viewsets.ModelViewSet):
     queryset = Flight.objects.all()
     serializer_class = FlightSerializer
-    
-class FlightDetailAPIView(RetrieveUpdateDestroyAPIView):
-    queryset = Flight.objects.all()
-    serializer_class = FlightSerializer
-    
-    # Implements Partial Update
-    def get_serializer(self, *args, **kwargs):
-        kwargs['partial'] = True
-        return super(FlightDetailAPIView, self).get_serializer(*args, **kwargs)
 
 
 
