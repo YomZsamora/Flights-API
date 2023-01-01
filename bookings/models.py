@@ -23,8 +23,8 @@ class Passenger(models.Model):
         
 
 class Booking(models.Model):
-    flight_id = models.ForeignKey('Flight', null=False, on_delete=models.CASCADE) # Many to One Relationship
-    passenger_id = models.ForeignKey('Passenger', null=False, on_delete=models.CASCADE) # Many to One Relationship
+    flight = models.ForeignKey('Flight', null=False, on_delete=models.CASCADE) # Many to One Relationship
+    passenger = models.ForeignKey('Passenger', null=False, on_delete=models.CASCADE) # Many to One Relationship
     booked_seat = models.CharField(max_length=3)
     
     
