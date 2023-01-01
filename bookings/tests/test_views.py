@@ -25,7 +25,7 @@ class TestViews(APITestCase):
             "passenger": test_passenger.id,
             "flight": test_flight.id
         }
-        self.client.post(reverse('bookings:booking-list'), booking)
+        self.client.post(reverse('bookings'), booking)
         
     
     # -----------------------------------------------------------
@@ -34,30 +34,30 @@ class TestViews(APITestCase):
     def test_create_flight_POST(self):
         flight = Flight.objects.get(pk=1)
         serializer = FlightSerializer(flight)
-        response = self.client.post(reverse('bookings:flight-list'), serializer.data)
+        response = self.client.post(reverse('flights'), serializer.data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         
     def test_create_flight_error(self):
         flight = {}
-        response = self.client.post(reverse('bookings:flight-list'), flight)
+        response = self.client.post(reverse('flights'), flight)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
     
     def test_flight_list_GET(self):
-        response = self.client.get(reverse('bookings:flight-list'))
+        response = self.client.get(reverse('flights'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTrue(response.data)
         
     def test_flight_details_GET(self):
-        response = self.client.get(reverse('bookings:flight-details', kwargs={"pk": 2}))
+        response = self.client.get(reverse('flights', kwargs={"pk": 2}))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['available_seats'], 22)
         
     def test_flight_does_not_exist_GET(self):
-        response = self.client.get(reverse('bookings:flight-details', kwargs={"pk": 4}))
+        response = self.client.get(reverse('flights', kwargs={"pk": 4}))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
         
     def test_flight_details_update_PUT(self):
-        response = self.client.put(reverse('bookings:flight-details', kwargs={"pk": 2}), {'available_seats': 6})
+        response = self.client.put(reverse('flights', kwargs={"pk": 2}), {'available_seats': 6})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data['available_seats'], 6)
         
@@ -66,11 +66,11 @@ class TestViews(APITestCase):
             "available_seats": "12", # Should be Number of IntegerField
             "departure_time": "11/02/2022" # Invalid DateTimeField Format
         }
-        response = self.client.put(reverse('bookings:flight-details', kwargs={"pk": 1}), invalid_post) 
+        response = self.client.put(reverse('flights', kwargs={"pk": 1}), invalid_post) 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         
     def test_flight_details_DELETE(self):
-        response = self.client.delete(reverse('bookings:flight-details', kwargs={"pk": 2}))
+        response = self.client.delete(reverse('flights', kwargs={"pk": 2}))
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(Flight.objects.count(), 1)
         
