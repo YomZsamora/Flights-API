@@ -13,11 +13,9 @@ urlpatterns = [
     path('passengers/', views.PassengerListAPIView.as_view(), name='passenger-list'),
     # GET: /Fetched a Specific Passenger Given the ID
     path('passenger/<int:pk>/', views.PassengerDetailAPIView.as_view(), name='passenger-details'),
-    # POST: Create New Booking
-    path('booking/add/', views.BookingCreateView.as_view(), name='create-booking'),
-    # GET: Fetch All Bookings
-    path('bookings/', views.BookingListView.as_view(), name='booking-list'),
+    # GET & POST: Create New Booking & Fetch All Bookings
+    path('bookings/', views.BookingListAPIVIew.as_view(), name='booking-list'),
     # GET: /Fetched a Specific Booking Given the ID
-    path('booking/<int:pk>/', views.BookingDetailView.as_view(), name='booking-details'),
+    path('booking/<int:pk>/', views.BookingDetailAPIView.as_view(), name='booking-details'),
     
 ]

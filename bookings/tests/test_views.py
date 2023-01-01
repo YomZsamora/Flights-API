@@ -25,7 +25,7 @@ class TestViews(APITestCase):
             "passenger": test_passenger.id,
             "flight": test_flight.id
         }
-        self.client.post(reverse('bookings:create-booking'), booking)
+        self.client.post(reverse('bookings:booking-list'), booking)
         
     
     # -----------------------------------------------------------
@@ -140,12 +140,12 @@ class TestViews(APITestCase):
             "passenger": test_passenger.id,
             "flight": test_flight.id
         }
-        response = self.client.post(reverse('bookings:create-booking'), booking)
+        response = self.client.post(reverse('bookings:booking-list'), booking)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         
     def test_create_booking_error(self):
         booking = {}
-        response = self.client.post(reverse('bookings:create-booking'), booking)
+        response = self.client.post(reverse('bookings:booking-list'), booking)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         
     def test_booking_list_GET(self):
@@ -165,7 +165,7 @@ class TestViews(APITestCase):
     def test_booking_details_update_PUT(self):
         response = self.client.put(reverse('bookings:booking-details', kwargs={"pk": 1}), {'booked_seat': "19A"})
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['booking']['booked_seat'], "19A")
+        self.assertEqual(response.data['booked_seat'], "19A")
         
     def test_booking_details_update_error(self):
         invalid_post = {
