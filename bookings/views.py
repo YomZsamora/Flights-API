@@ -56,7 +56,7 @@ class FlightReportView(XLSXFileMixin, ReadOnlyModelViewSet):
     queryset = Flight.objects.all()
     serializer_class = FlightSerializer
     renderer_classes = [XLSXRenderer]
-    filename = 'my_export.xlsx'
+    filename = 'flights_report.xlsx'
     
     def list(self, request, *arg, **kwargs):
             queryset = Flight.objects.all()
